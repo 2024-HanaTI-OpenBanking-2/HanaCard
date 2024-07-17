@@ -24,8 +24,8 @@ nav {
 
 nav a {
   color: black;
-  text-decoration: none;
   font-weight: bold;
+  cursor: pointer; /* 클릭 가능한 요소임을 나타내는 포인터로 변경 */
 }
 
 section {

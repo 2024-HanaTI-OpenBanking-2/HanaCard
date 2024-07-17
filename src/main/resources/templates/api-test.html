@@ -1,5 +1,6 @@
+<!--cardmain.html-->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>하나카드 Main Page</title>
@@ -16,9 +17,13 @@
     </nav>
 </header>
 <section>
-    <a href="/page/api-test">API 테스트 페이지로 이동</a>
+    <a th:href="@{/api/card-list}">카드 리스트</a>
+    <br>
+    <a th:href="@{/api/account-inquiry}">계좌 목록 조회</a>
+    <br>
 </section>
 <footer>
+
 </footer>
 </body>
 </html>

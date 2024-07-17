@@ -36,8 +36,7 @@ public class CardCustomerCards {
     @Column(name = "card_status_code", length = 20)
     private String cardStatusCode;
 
-    @Column(name = "ci", length = 200)
-    private String ci;
+
 
     // CardProducts의 cardImageUrl에 접근하기 위한 편의 메소드
     public byte[] getCardImageUrl() {

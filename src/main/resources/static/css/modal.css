@@ -1,0 +1,135 @@
+.modal-container {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    animation: modalPopIn 0.4s ease-out forwards;
+
+}
+
+@keyframes modalPopIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-screen {
+    width: 100%;
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-screen.active {
+    display: block;
+}
+
+.button-group button {
+    margin: 5px;
+    padding: 12px 24px;
+    background-color: #5C67F2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.3s;
+}
+
+.button-group button:hover {
+    background-color: #434AD3;
+    transform: translateY(-2px);  // 버튼을 약간 들어 올림
+}
+
+.hidden {
+    display: none;
+}
+
+.confirmation-container {
+    text-align: center;
+    padding: 30px;
+    background: #F8F9FA;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    animation: slideInFromBottom 0.4s ease-out forwards;
+}
+
+@keyframes slideInFromBottom {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.checkmark-icon {
+    font-size: 48px;
+    color: #4CAF50;
+}
+
+.charged-amount, .account-details div {
+    font-size: 20px;
+    color: #333;
+}
+
+.account-details {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.account-details .label {
+    font-size: 16px;
+    color: #666;
+}
+
+.close-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.close-btn:hover {
+    background-color: #369946;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.modal-close-btn {
+    position: absolute; /* 절대 위치 설정 */
+    top: 10px; /* 상단에서 10px 떨어진 곳에 배치 */
+    right: 10px; /* 우측에서 10px 떨어진 곳에 배치 */
+    border: none;
+    background: none;
+    color: #666;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.2s ease-out;
+}
+
+.modal-close-btn:hover {
+    color: #333; /* 호버 시 색상 변경 */
+}

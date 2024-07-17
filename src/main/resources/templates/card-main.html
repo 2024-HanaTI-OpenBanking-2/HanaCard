@@ -1,0 +1,134 @@
+<!--card-main.html-->
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>하나카드 Main Page</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="shortcut icon" href="/images/hana_logo.png">
+    <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="/images/hanaCardLogo.png" alt="하나카드 로고" style="height: 5vh"/>
+    </div>
+    <nav>
+        <a href="/mypage">마이페이지</a>
+        <a href="/cards">카드 상품 둘러보기</a>
+        <a href="/logout">로그아웃</a>
+        <a href="/menu">☰</a>
+    </nav>
+</header>
+<section>
+    <div class="banner">
+        <div class="banner-container">
+            <div class="banner-slide">
+                <a href="https://www.hanacard.co.kr/" target="_blank">
+                    <img src="/images/card_banner_1.png" alt="배너 이미지 1"/>
+                </a>
+            </div>
+            <div class="banner-slide">
+                <a href="https://www.hanacard.co.kr/" target="_blank">
+                    <img src="/images/card_banner_2.png" alt="배너 이미지 2"/>
+                </a>
+            </div>
+            <div class="banner-slide">
+                <a href="https://www.hanacard.co.kr/" target="_blank">
+                    <img src="/images/card_banner_3.png" alt="배너 이미지 3"/>
+                </a>
+            </div>
+        </div>
+        <button class="prev" onclick="prevSlide()">&#10094;</button>
+        <button class="next" onclick="nextSlide()">&#10095;</button>
+    </div>
+    <div class="card-slider">
+        <button id="loadCardsBtn" class="icon-button" style="z-index: 1000" ><i class="fas fa-sync-alt"></i></button>
+        <div class="card-slides" id="cardContainer">
+            <div class="loadMessage card">
+                <img src="/images/default-card.png" style="margin-top:30px; position:absolute" alt="카드이미지">
+                <div class="card-info">
+                    <h3>카드를 불러와주세요!</h3>
+                </div>
+            </div>
+            <!-- JavaScript를 통해 카드 데이터가 동적으로 삽입됩니다 -->
+            <div id="loadingSpinner" style="display: none; align-items: center; justify-content: center;">
+                <img src="/images/loading-spinner.gif" alt="Loading..."/>
+            </div>
+        </div>
+        <button class="prev-card" onclick="prevCard()">&#10094;</button>
+        <button class="next-card" onclick="nextCard()">&#10095;</button>
+    </div>
+</section>
+<footer>
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img src="/images/hanafin_logo.png" alt="Hana Card Logo" style="height: 50px;">
+        </div>
+        <div class="footer-info">
+            <p>고객센터(유료): 국내 1800-1111 / 해외 +82-1800-1111</p>
+            <p>시각장애인 전용 상담센터: 1599-0701</p>
+            <p>COPYRIGHT © 2017 Hana Card. ALL RIGHTS RESERVED</p>
+        </div>
+        <div class="footer-socials">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</footer>
+
+<!-- 모달 전체 컨테이너 -->
+<div id="modalContainer" class="modal-container">
+    <button class="modal-close-btn" onclick="closeModal()">×</button>
+    <!-- 카드 선택 화면 -->
+    <div id="cardSelectionScreen" class="modal-screen">
+        <h3>계좌 선택</h3>
+        <h6>오픈 뱅킹에 요청하여 계좌를 실시간으로 가져옵니다.</h6>
+        <select id="cardSelect">
+            <!-- 여기에 동적으로 옵션을 삽입합니다. -->
+        </select>
+        <button onclick="goToAmountScreen()">다음</button> <!-- 카드 선택 후 금액 입력으로 -->
+    </div>
+
+    <!-- 금액 입력 화면 -->
+    <div id="amountScreen" class="modal-screen hidden">
+        <button class="modal-close-btn" onclick="closeModal()">×</button>
+        <h3>얼마를 충전할까요?</h3>
+        <h5 id="selectedAccount">선택된 계좌 : </h5>
+        <div class="input-group">
+            <input type="number" id="amountInput" value="0" placeholder="금액을 입력해주세요">
+            <div class="button-group">
+                <button class="amount-button" data-amount="10000">+1만원</button>
+                <button class="amount-button" data-amount="50000">+5만원</button>
+                <button class="amount-button" data-amount="100000">+10만원</button>
+            </div>
+        </div>
+        <button onclick="submitCharge()">확인</button>
+    </div>
+
+    <!-- 확인 화면 -->
+    <div id="confirmationScreen" class="modal-screen hidden">
+        <div class="confirmation-container">
+            <div class="checkmark-icon">
+                ✔
+            </div>
+            <div class="charged-amount"></div>
+            <div class="account-details">
+                <div class="label">은행 계좌</div>
+                <div id="bankAccountDetails"></div>
+                <div class="label">충전 후 은행 계좌 잔액</div>
+                <div id="finalBalance"></div>
+            </div>
+            <button class="close-btn" onclick="closeModal()">확인</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/banner.js"></script>
+<script src="/js/fallback.js"></script>
+<script src="/js/fetchCards.js"></script>
+
+</body>
+</html>

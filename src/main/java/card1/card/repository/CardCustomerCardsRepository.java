@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface CardCustomerCardsRepository extends JpaRepository<CardCustomerCards, String> {
     List<CardCustomerCards> findByCustomerId(String customerId);
+    CardCustomerCards findByCustomerCardId(String customerCardId);
 
 }

@@ -12,4 +12,7 @@ public class PageController {
     public String CardListPageController(){
         return "api-test";
     }
+
+    @GetMapping("/card-main")
+    public String CardMainPageController(){return "card-main";}
 }

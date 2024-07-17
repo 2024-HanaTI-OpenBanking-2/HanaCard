@@ -1,8 +1,6 @@
 package card1.card.service;
 
-import card1.card.dto.CardApprovalRequestDTO;
-import card1.card.dto.CardCustomerApprovalDTO;
-import card1.card.dto.CustomerCardInfoDTO;
+import card1.card.dto.*;
 import card1.card.entity.CardCustomerApprovals;
 import card1.card.entity.CardCustomerCards;
 import card1.card.entity.CardCustomers;
@@ -11,11 +9,18 @@ import card1.card.repository.CardCustomerCardsRepository;
 import card1.card.repository.CardCustomersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import java.util.Base64;
+
 
 @Service
 public class CardService {
@@ -28,6 +33,12 @@ public class CardService {
 
     @Autowired
     private CardCustomerApprovalsRepository cardCustomerApprovalsRepository;
+
+    private final RestTemplate restTemplate = new RestTemplate();
+
+    @Value("${openbanking.server.url}")
+    private String openbankingServerUrl;
+
 
     // 해당 메서드가 DTO 리스트를 반환하도록 변경
     public List<CustomerCardInfoDTO> findCardsByCustomerId(String customerId) {
@@ -52,19 +63,31 @@ public class CardService {
 
     // CardCustomerCards 엔티티를 CardCustomerCardsDto로 변환하는 헬퍼 메서드
     private CustomerCardInfoDTO convertToDto(CardCustomerCards card) {
-        return new CustomerCardInfoDTO(
+        // CardProduct이 null이 아닌 경우에만 접근
+        String cardProductId = card.getCardProduct() != null ? card.getCardProduct().getCardProductId() : null;
+        byte[] cardImage = card.getCardProduct() != null ? card.getCardProduct().getCardImage() : null;
+        String cardName = card.getCardProduct() != null ? card.getCardProduct().getCardName() : null;
+
+        // DTO 객체 생성
+        CustomerCardInfoDTO dto = new CustomerCardInfoDTO(
                 card.getCustomerCardId(),
-                card.getCardProduct() != null ? card.getCardProduct().getCardProductId() : null,
+                cardProductId,
                 card.getCustomerId(),
                 card.getExpirationDate(),
                 card.getLastMonthPerformance(),
                 card.getCustomerPerformanceSegment(),
                 card.getCardTypeCode(),
                 card.getCardStatusCode(),
-                card.getCardProduct() != null ? card.getCardProduct().getCardImage() : null,
-                card.getCardProduct() != null ? card.getCardProduct().getCardName() : null
+                cardImage,
+                cardName,
+                card.getCardBalance()  // double이 아니라 Double 사용 시 null 처리 필요
         );
+
+        // Base64 인코딩 수행, null 체크 후 진행
+        dto.encodeImage();
+        return dto;
     }
+
 
     public List<CardCustomerApprovalDTO> getCardsApprovalList(CardApprovalRequestDTO cardApprovalRequestDTO) {
         List<CardCustomerApprovals> customerApprovals = cardCustomerApprovalsRepository.findByCustomerCardId(cardApprovalRequestDTO.getCustomerCardId());
@@ -87,4 +110,28 @@ public class CardService {
                 approval.getCustomerCardId()
         );
     }
+
+    public List<AccountInfoResponseDTO> getAccountList(String customerCardId) {
+        CardCustomerCards card = cardCustomerCardsRepository.findByCustomerCardId(customerCardId);
+        System.out.println("뽑아낸 card 객체" + card);
+        if (card != null) {
+            String customerId = card.getCustomerId();
+            System.out.println("사용자 id" + customerId);
+            CardCustomers customer = cardCustomersRepository.findById(customerId).orElse(null);
+             CiDTO ciDTO = new CiDTO(customer.getCi());
+            System.out.println("ci" + ciDTO.getCi());
+            String url = openbankingServerUrl + "/card/account-list";
+             AccountInfoResponseDTO[] result = restTemplate.postForObject(url, ciDTO, AccountInfoResponseDTO[].class);
+             return Arrays.asList(result);
+        }else{
+            return null;
+        }
+    }
+
+    public PayMoneyChargeResponseDTO getPayMoneyChargeResponse(PayMoneyChargeRequestDTO request){
+        String url = openbankingServerUrl + "/card/paymoney-charge";
+        return restTemplate.postForObject(url, request, PayMoneyChargeResponseDTO.class);
+    }
+
+
 }

@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "card_authentication_informations")
+@Table(name = "card_auth_informations")
 public class CardAuthenticationInformations {
 
     @Id

@@ -40,4 +40,7 @@ public class CardCustomers {
 
     @Column(name = "customer_gender_code", length = 20)
     private String customerGenderCode;
+
+    @Column(name = "ci", length = 200)
+    private String ci;
 }

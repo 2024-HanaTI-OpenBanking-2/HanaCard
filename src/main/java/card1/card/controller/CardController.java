@@ -23,7 +23,7 @@ public class CardController {
     public ResponseEntity<List<CustomerCardInfoDTO>> getCardsApi(Model model) {
         String loggedInUserId = "id1";  // 하드코딩된 사용자 ID
         List<CustomerCardInfoDTO> cards = cardService.findCardsByCustomerId(loggedInUserId);
-        System.out.println(cards);
+//        System.out.println(cards);
         return ResponseEntity.ok(cards);  // JSON 형태로 카드 정보를 반환
     }
 
@@ -41,7 +41,7 @@ public class CardController {
 
     @GetMapping("/account-list")
     private ResponseEntity<List<AccountInfoResponseDTO>> getAccountList(@RequestParam("customer-card-id") String customerCardId) {
-        System.out.println("컨트롤러에서 뽑은 카드 id : " + customerCardId);
+//        System.out.println("컨트롤러에서 뽑은 카드 id : " + customerCardId);
         List<AccountInfoResponseDTO> response = cardService.getAccountList(customerCardId);
         return ResponseEntity.ok(response);
     }

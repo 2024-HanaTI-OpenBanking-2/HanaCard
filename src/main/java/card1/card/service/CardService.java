@@ -113,7 +113,7 @@ public class CardService {
 
     public List<AccountInfoResponseDTO> getAccountList(String customerCardId) {
         CardCustomerCards card = cardCustomerCardsRepository.findByCustomerCardId(customerCardId);
-        System.out.println("뽑아낸 card 객체" + card);
+//        System.out.println("뽑아낸 card 객체" + card);
         if (card != null) {
             String customerId = card.getCustomerId();
             System.out.println("사용자 id" + customerId);

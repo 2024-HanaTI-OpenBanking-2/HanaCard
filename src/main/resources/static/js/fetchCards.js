@@ -130,25 +130,31 @@ function initModal() {
 }
 
 function loadAccountInfo(cardId) {
+    const spinner = document.getElementById('spinner');
     if (!cardId) {
         console.error('Invalid card ID:', cardId);
         alert('카드 ID가 유효하지 않습니다.');
         return;
     }
 
+    spinner.style.display = 'flex'; // 스피너 표시
+
     fetch(`/api/account-list?customer-card-id=${cardId}`)
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        })
-        .then(data => {
-            updateAccountSelect(data); // 계좌 정보를 바탕으로 select 옵션 업데이트
-        })
-        .catch(error => {
-            console.error('Error fetching account data:', error);
-            alert('계좌 정보를 불러오는 데 실패했습니다.');
-        });
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    })
+    .then(data => {
+        updateAccountSelect(data); // 계좌 정보를 바탕으로 select 옵션 업데이트
+        spinner.style.display = 'none'; // 데이터 로드 완료 후 스피너 숨김
+    })
+    .catch(error => {
+        console.error('Error fetching account data:', error);
+        alert('계좌 정보를 불러오는 데 실패했습니다.');
+        spinner.style.display = 'none'; // 에러 발생 시 스피너 숨김
+    });
 }
+
 
 function updateAccountSelect(accounts) {
     const select = document.getElementById('cardSelect');

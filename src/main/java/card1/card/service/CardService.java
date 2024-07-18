@@ -128,10 +128,27 @@ public class CardService {
         }
     }
 
-    public PayMoneyChargeResponseDTO getPayMoneyChargeResponse(PayMoneyChargeRequestDTO request){
+    public PayMoneyChargeResponseDTO getPayMoneyChargeResponse(PayMoneyChargeRequestDTO request) {
         String url = openbankingServerUrl + "/card/paymoney-charge";
-        return restTemplate.postForObject(url, request, PayMoneyChargeResponseDTO.class);
+        // REST 템플릿을 사용해 외부 API 호출
+        PayMoneyChargeResponseDTO response = restTemplate.postForObject(url, request, PayMoneyChargeResponseDTO.class);
+        String cardId = "1111-1111-1111-1111"; // 이 부분은 보통 메서드의 파라미터로 받거나 다른 방법으로 결정됩니다.
+
+        // 데이터베이스에서 카드 정보 조회
+        CardCustomerCards card = cardCustomerCardsRepository.findByCustomerCardId(cardId);
+        if (card != null && response != null) {
+            // 충전 금액을 현재 잔액에 추가
+            card.addBalance(response.getAmount());
+            // 엔티티 상태 업데이트 및 데이터베이스에 반영
+            cardCustomerCardsRepository.save(card);
+            // 충전 작업의 결과를 반환
+            return response;
+        } else {
+            // 카드 정보나 응답이 유효하지 않은 경우 예외 발생
+            throw new RuntimeException("카드 정보를 찾을 수 없거나 충전 응답이 유효하지 않습니다.");
+        }
     }
+
 
 
 }

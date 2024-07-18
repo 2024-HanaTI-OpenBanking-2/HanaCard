@@ -35,7 +35,8 @@
 }
 
 .modal-screen.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
 .button-group button {
@@ -133,3 +134,126 @@
 .modal-close-btn:hover {
     color: #333; /* 호버 시 색상 변경 */
 }
+
+.loading-spinner {
+    position: absolute; /* 위치를 absolute 유지, 모달과 동일한 레벨 */
+    top: 50%; /* 상단에서 50% 위치 */
+    left: 50%; /* 왼쪽에서 50% 위치 */
+    transform: translate(-50%, -50%); /* 정확한 중앙에 위치하도록 조정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%; /* 적절한 크기 설정 */
+    height: 50%; /* 적절한 크기 설정 */
+    background: rgba(255, 255, 255, 0); /* 스피너의 배경, 약간 투명 */
+    z-index: 1050; /* 충분히 높은 z-index로 모든 요소 위에 표시 */
+}
+
+.loading-spinner img {
+    height: 100%; /* 적절한 크기 설정 */
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="rgba(0,0,0,0.6)" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-color: white;
+    color: #333;
+}
+
+select:hover {
+    border-color: #888;
+}
+
+select:focus {
+    outline: none;
+    border-color: #5C67F2;
+    box-shadow: 0 0 6px rgba(92,103,242,0.5);
+}
+
+.button-group button {
+    width: 100%;
+    padding: 12px 0;
+    margin-top: 20px;
+    background-color: #5C67F2;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.button-group button:hover {
+    background-color: #434AD3;
+    transform: scale(1.05);
+}
+
+@keyframes slideInFromBottom {
+    0% {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-screen {
+    animation: slideInFromBottom 0.4s ease-out;
+}
+
+.confirm {
+    width: 90%; /* 버튼 너비 */
+    padding: 12px 20px; /* 상하 좌우 패딩 */
+    margin: 10px auto; /* 자동 마진으로 중앙 정렬 */
+    background-color: #5C67F2; /* 기본 배경 색상 */
+    color: white; /* 텍스트 색상 */
+    font-size: 16px; /* 글자 크기 */
+    border: none; /* 테두리 없음 */
+    border-radius: 25px; /* 모서리 둥글게 */
+    cursor: pointer; /* 커서 포인터 */
+    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 그림자 효과 */
+}
+
+.confirm:hover, .confirm:focus {
+    background-color: #434AD3; /* 호버 및 포커스 시 색상 변경 */
+    transform: translateY(-3px); /* 약간 위로 이동 */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* 호버 시 그림자 강조 */
+}
+
+.confirm:active {
+    transform: translateY(-1px); /* 클릭 시 아래로 조금 이동 */
+    background-color: #363B91; /* 클릭 시 색상 변경 */
+}
+.modal-container input[type="number"] {
+    width: 90%; /* 입력 필드 너비 */
+    padding: 12px 20px; /* 패딩 */
+    margin: 10px auto; /* 중앙 정렬 */
+    font-size: 16px; /* 글자 크기 */
+    border: 2px solid #ccc; /* 테두리 */
+    border-radius: 25px; /* 모서리 둥글게 */
+    transition: border-color 0.3s ease-in-out; /* 테두리 색상 변화 애니메이션 */
+    display: block; /* 블록 레벨 요소 */
+}
+
+.modal-container input[type="number"]:focus {
+    outline: none; /* 포커스 아웃라인 제거 */
+    border-color: #5C67F2; /* 포커스 시 테두리 색상 변경 */
+}
+
+
+
+
+

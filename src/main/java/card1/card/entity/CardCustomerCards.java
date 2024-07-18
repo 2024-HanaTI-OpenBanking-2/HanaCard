@@ -47,4 +47,8 @@ public class CardCustomerCards {
     public String getCardName(){
         return cardProduct != null ? cardProduct.getCardName() : null;
     }
+
+    public void addBalance(double amount) {
+        this.cardBalance += amount;
+    }
 }
